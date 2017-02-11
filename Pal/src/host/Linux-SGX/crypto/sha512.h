@@ -1,7 +1,4 @@
-/* -*- mode:c; c-file-style:"k&r"; c-basic-offset: 4; tab-width:4; indent-tabs-mode:nil; mode:auto-fill; fill-column:78; -*- */
-/* vim: set ts=4 sw=4 et tw=78 fo=cqt wm=0: */
-
-/* sha256.h
+/* sha512.h
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
  *
@@ -22,29 +19,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef CTAO_CRYPT_SHA256_H
-#define CTAO_CRYPT_SHA256_H
+
+#ifndef CTAO_CRYPT_SHA512_H
+#define CTAO_CRYPT_SHA512_H
+
+#include <stdint.h>
+
+#ifndef W64LIT
+#define WORD64_AVAILABLE
+#define W64LIT(x) x##LL
+#endif
 
 #include "crypto/integer.h"
 
 /* in bytes */
 enum {
-    SHA256_BLOCK_SIZE   = 64,
-    SHA256_DIGEST_SIZE  = 32,
-    SHA256_PAD_SIZE     = 56
+    SHA512_BLOCK_SIZE   = 128,
+    SHA512_DIGEST_SIZE  =  64,
+    SHA512_PAD_SIZE     = 112 
 };
 
-/* SHA256 digest */
-typedef struct SHA256 {
+
+/* SHA512 digest */
+typedef struct SHA512 {
     word32  buffLen;   /* in bytes          */
     word32  loLen;     /* length in bytes   */
     word32  hiLen;     /* length in bytes   */
-    word32  digest[SHA256_DIGEST_SIZE / sizeof(word32)];
-    word32  buffer[SHA256_BLOCK_SIZE  / sizeof(word32)];
-} SHA256;
+    word64  digest[SHA512_DIGEST_SIZE / sizeof(word64)];
+    word64  buffer[SHA512_BLOCK_SIZE  / sizeof(word64)];
+} SHA512;
 
-int SHA256Init(SHA256 *);
-int SHA256Update(SHA256 *, const byte *, word32);
-int SHA256Final(SHA256 *, byte *);
 
-#endif /* CTAO_CRYPT_SHA256_H */
+int SHA512Init(SHA512 *);
+int SHA512Update(SHA512 *, const byte *, word32);
+int SHA512Final(SHA512 *, byte *);
+int SHA512Hash(const byte *, word32, byte *);
+
+#endif /* CTAO_CRYPT_SHA512_H */
