@@ -1,0 +1,16 @@
+ifeq ($(origin CC),default)
+CC	= gcc
+endif
+ifeq ($(origin AS),default)
+AS	= gcc
+endif
+ifeq ($(origin AR),default)
+AR	= ar rcs
+endif
+ifeq ($(origin LD),default)
+LD	= ld
+endif
+ifeq ($(origin CXX),default)
+CXX = g++
+endif
+OBJCOPY ?= objcopy
