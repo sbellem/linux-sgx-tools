@@ -1,3 +1,67 @@
+***************
+Linux SGX Tools
+***************
+**Work in Progress**
+
+This repository aims to contain the necessary files to build the tools from
+`oscarlab/graphene`_ found under `graphene/Pal/src/host/Linux-SGX/tools/`_.
+
+This is work in progress and is subject to breaking changes without notice.
+
+The original README content of the oscarlab/graphene repository is below
+for the time-being, for convenience, as a reference.
+
+Building the tools
+==================
+
+.. code-block:: shell
+
+    $ git clone git@github.com:sbellem/linux-sgx-tools.git
+    $ cd linux-sgx-tools
+    $ make SGX=1 -C Pal/lib/ target=$PWD/Pal/src/host/Linux-SGX/.lib/
+    $ make -C Pal/src/host/Linux-SGX/tools/
+
+check that the executable tool has been generated:
+
+.. code-block:: shell
+
+    $ ls Pal/src/host/Linux-SGX/tools/verify-ias-report/verify_ias_report
+    Pal/src/host/Linux-SGX/tools/verify-ias-report/verify_ias_report
+
+check that it works:
+
+.. code-block:: shell
+
+    $ LD_LIBRARY_PATH=$PWD/Pal/src/host/Linux-SGX/tools/common:$PWD/Pal/lib/crypto/mbedtls/install/lib \
+        ./Pal/src/host/Linux-SGX/tools/verify-ias-report/verify_ias_report --help
+    Usage: ./Pal/src/host/Linux-SGX/tools/verify-ias-report/verify_ias_report [options]
+    Available options:
+      --help, -h                Display this help
+      --verbose, -v             Enable verbose output
+      --msb, -m                 Print/parse hex strings in big-endian order
+      --report-path, -r PATH    Path to the IAS report
+      --sig-path, -s PATH       Path to the IAS report's signature
+      --allow-outdated-tcb, -o  Treat IAS status GROUP_OUT_OF_DATE as OK
+      --nonce, -n STRING        Nonce that's expected in the report (optional)
+      --mr-signer, -S STRING    Expected mr_signer field (hex string, optional)
+      --mr-enclave, -E STRING   Expected mr_enclave field (hex string, optional)
+      --report-data, -R STRING  Expected report_data field (hex string, optional)
+      --isv-prod-id, -P NUMBER  Expected isv_prod_id field (uint16_t, optional)
+      --isv-svn, -V NUMBER      Expected isv_svn field (uint16_t, optional)
+      --ias-pubkey, -i PATH     Path to IAS public RSA key (PEM format, optional)
+
+Next steps
+==========
+* Simplify: remove unecessary files.
+* Remove the need to pass the ``SGX=1`` option.
+* Check with the graphene team if they thought about providing these tools
+  on a standalone basis, decoupled from the rest of the graphene codebase.
+
+
+
+.. _oscarlab/graphene: https://github.com/oscarlab/graphene
+.. _graphene/Pal/src/host/Linux-SGX/tools/: https://github.com/oscarlab/graphene/tree/master/Pal/src/host/Linux-SGX/tools
+
 ******************************************
 Graphene Library OS with Intel SGX Support
 ******************************************
